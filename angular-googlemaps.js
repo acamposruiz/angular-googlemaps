@@ -24,7 +24,7 @@ angular.module('angular-googlemaps', [])
         };
         return addressFromCoordinates;
     })
-    .factory('coordinatesFromAddress', function ($http, $q) {
+    .factory('coordinatesFromAddress', function ($http, $q, maps) {
         'use strict';
         var coordinatesFromAddress = function (address, section) {
             var deferred = $q.defer();
@@ -41,8 +41,11 @@ angular.module('angular-googlemaps', [])
                 })
             }).
                 success(function (data) {
+                    maps.renderMap(data.results[0].geometry.location.lat, data.results[0].geometry.location.lng);
                     deferred.resolve({
-                        coordinates: data.results[0].geometry.location.lat + ',' + data.results[0].geometry.location.lng,
+                        //coordinates: data.results[0].geometry.location.lat + ',' + data.results[0].geometry.location.lng,
+                        lat: data.results[0].geometry.location.lat,
+                        lng: data.results[0].geometry.location.lng,
                         section: section
                     });
                 });
